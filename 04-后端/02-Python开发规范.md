@@ -14,13 +14,49 @@
 
 ### 2.1 定义说明
 
-函数和类的整体说明使用中文 # 注释，放在 def、async def 或 class 的前一行，不在函数体或类体内写说明用 docstring。存在装饰器时，注释放在第一条装饰器上方；方法和嵌套函数同样处理。参数、返回值及特殊约束继续在定义上方说明，注释内容遵循通用规范。
+函数和类的概括说明使用中文 `#` 注释，放在 `def`、`async def` 或 `class` 的前一行。存在装饰器时，注释放在第一条装饰器上方；方法和嵌套函数同样处理。类的整体说明不在类体内另写 docstring。
+
+函数需要详细解释输入输出时，在函数体开头使用多行三引号 docstring，说明输入、输出、完整示例及特殊规则。起始和结束三双引号各独占一行；简短能力概括保留在定义上方，详细说明不在上方重复。函数注释的内容和示例要求统一遵循[通用输入输出说明](../01-通用编码规范.md#122-输入输出)及[示例要求](../01-通用编码规范.md#123-示例要求)。
 
 ```python
-# 解析一条业务记录。
-# 必需字段缺失或类型错误时抛出 RecordParseError。
-def parse_record(raw_record: str) -> dict[str, str]:
-    ...
+# 按类别整理记录 ID。
+def group_record_ids(records: list[dict[str, str]]) -> dict[str, list[str]]:
+    """
+    输入：包含 id 和 category 的记录列表，这两个字段均为必填字符串。
+    输入示例：
+
+        records = [
+            {
+                "id": "r001",
+                "category": "a",
+            },
+            {
+                "id": "r002",
+                "category": "b",
+            },
+            {
+                "id": "r003",
+                "category": "b",
+            },
+        ]
+
+    输出：类别到记录 ID 列表的字典，每类内部保持输入顺序。
+    上述输入对应的完整返回值：
+
+        {
+            "a": ["r001"],
+            "b": ["r002", "r003"],
+        }
+
+    同类记录归入同一列表；缺少 id 或 category 时抛出 KeyError。
+    """
+    groups: dict[str, list[str]] = {}
+    for record in records:
+        category = record["category"]
+        if category not in groups:
+            groups[category] = []
+        groups[category].append(record["id"])
+    return groups
 ```
 
 框架需要在运行时读取工具、HTTP 或 JSON Schema 说明时，通过所属接口的 description 等参数显式提供，不依赖函数或类的 docstring。移动说明时保留实际可见的说明，检查继承关系，避免子类误用父类说明。
@@ -37,7 +73,7 @@ Python 文件顶部说明统一写在一个多行模块 docstring 中，起始�
 from __future__ import annotations
 ```
 
-模块 docstring 位于所有导入及 future 导入之前。新增文件和修改顶部说明时采用此格式，函数和类继续使用定义外注释。
+模块 docstring 位于所有导入及 future 导入之前。新增文件和修改顶部说明时采用此格式；函数和类的说明格式见[定义说明](#21-定义说明)。
 
 ## 3 分支表达
 
