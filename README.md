@@ -50,10 +50,10 @@ bash "${CODEX_HOME:-$HOME/.codex}/standards/scripts/sync.sh"
 
 ## 5 更新规范
 
-先同步，再直接编辑本地 `standards/` 中的正文；不要到项目复制修改。检查通过后提交推送：
+先同步，再编辑本地 `standards/` 中所属正文；不要到项目复制修改。收集项目规范时，在仓库外本地完成对照和冲突决策，只将处理结果写入正式规范，具体流程见 [规范维护规范](05-规范维护规范.md#2-更新流程)。检查通过后仅暂存本次修改的文件，再提交推送。以下以修改通用编码规范为例，实际文件按本次改动选择：
 
 ```bash
-git -C "${CODEX_HOME:-$HOME/.codex}/standards" add .
+git -C "${CODEX_HOME:-$HOME/.codex}/standards" add -- "01-通用编码规范.md"
 git -C "${CODEX_HOME:-$HOME/.codex}/standards" commit -m "docs: update engineering standards"
 git -C "${CODEX_HOME:-$HOME/.codex}/standards" push
 ```

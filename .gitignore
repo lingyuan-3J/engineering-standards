@@ -3,3 +3,7 @@ Thumbs.db
 *.tmp
 *.bak
 tests/.tmp/
+
+# 规范对照和冲突裁决只在仓库外本地处理。
+/proposals/
+*冲突决策*.md
