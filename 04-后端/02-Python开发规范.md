@@ -22,7 +22,8 @@
 # 按类别整理记录 ID。
 def group_record_ids(records: list[dict[str, str]]) -> dict[str, list[str]]:
     """
-    输入：包含 id 和 category 的记录列表，这两个字段均为必填字符串。
+    参数 records: list[dict[str, str]]：每项包含必填的 id: str（记录 ID）
+    和 category: str（类别）；本函数直接取字段，不执行额外类型校验。
     输入示例：
 
         records = [
@@ -40,7 +41,8 @@ def group_record_ids(records: list[dict[str, str]]) -> dict[str, list[str]]:
             },
         ]
 
-    输出：类别到记录 ID 列表的字典，每类内部保持输入顺序。
+    返回 dict[str, list[str]]：键为 category，值为该类别的 id 列表，
+    每类内部保持输入顺序；records 为空时返回 {}。
     上述输入对应的完整返回值：
 
         {
